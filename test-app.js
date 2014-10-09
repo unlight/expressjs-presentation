@@ -8,6 +8,20 @@ app.set("port", 3000);
 app.use(cookieParser("xfre"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+var session    = require("express-session");
+app.use(session({
+	secret: "xxx",
+	// resave: true,
+	// saveUninitialized: true,
+}));
+
+app.get('/', function(req, res, next) {
+	req.session.views = (req.session.views >> 0) + 1;
+	res.send("<pre>req.session.views " + req.session.views + "</pre>");
+	console.log(req.session.views);
+	next();
+});
+
 app.get('/abc', function(req, res, next) {
 	console.log('abc');
 	res.write('abc');
