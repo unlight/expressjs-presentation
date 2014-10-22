@@ -1,0 +1,32 @@
+<style type="text/css">
+label {
+	float: left;
+	width: 100px;
+}
+div + div {
+	margin-top: 10px;
+}
+</style>
+
+
+<h1>Form example</h1>
+
+<form method="POST" enctype="multipart/form-data">
+	<input type="hidden" name="hush" value="hidden, but not secret!" />
+	<div>
+		<label for="name">Your name: </label>
+		<input type="text" id="name" name="name" />
+	</div>
+
+	<div>
+		<label for="checkbox">Check: </label>
+		<input type="checkbox" id="checkbox" name="checkbox" value="1"/>
+	</div>
+
+	<div>
+		<label for="photo">Photo: </label>
+		<input type="file" id="photo" name="photo" />
+	</div>
+	
+	<button type="submit">Submit</button>
+</form>
