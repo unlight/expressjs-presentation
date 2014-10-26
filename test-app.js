@@ -31,6 +31,7 @@ app.get('/abc', function(req, res, next) {
 app.get('/abc*', function(req, res) {
 	console.log('abc*');
 	res.write('abc*');
+	res.write(req.originalUrl + " " + req.url);
 	res.end();
 });
 
