@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
+var net = require('net');
 
 app.set("port", 3000);
 
@@ -85,6 +86,29 @@ app.get("/p", function(req, res) {
 app.get("/profile/:name", function(req, res) {
 	res.send([req.params, req.query]);
 });
+
+app.get('/domain-caught2', function(req, res, next) {
+	var client = net.connect({port: 8124}, function() {
+		res.end("ok");	
+	});
+	
+});
+
+// domains
+app.get('/domain-caught', function(req, res, next) {
+    // create a domain for this request
+    var domain = require('domain').create();
+    domain.run(function() {
+       var client = net.connect({port: 8124});
+    });
+    // handle errors on this domain
+    domain.on('error', function(err) {
+        console.error('DOMAIN ERROR CAUGHT\n', err.stack);
+        res.end('Server error.');
+        // server.close(); // server - result of app.listen()
+    });
+});
+
 
 app.listen(app.get("port"), function() {
 	console.log("Express app started, port %d", app.get("port"));

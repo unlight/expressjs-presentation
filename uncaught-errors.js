@@ -7,26 +7,21 @@ app.get("/", function(req, res, next) {
 	res.send("home");
 });
 
-
-app.use(function(req, res, next) {
+app.get('/domain-caught', function(req, res, next) {
     // create a domain for this request
     var domain = require('domain').create();
+    domain.run(function() {
+        setTimeout(function() {
+            throw new Error("Boom!");
+        }, 0);
+    });
     // handle errors on this domain
     domain.on('error', function(err) {
         console.error('DOMAIN ERROR CAUGHT\n', err.stack);
-        res.setHeader('content-type', 'text/plain');
         res.end('Server error.');
         server.close(); // server - result of app.listen()
     });
-    // add the request and response objects to the domain
-    domain.add(req);
-    domain.add(res);
-    // execute the rest of the request chain in the domain
-    domain.run(next);
-    // 
 });
-
-
 
 // Caught error
 app.get('/caught', function(req, res, next) {
