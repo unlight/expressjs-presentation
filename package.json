@@ -18,7 +18,9 @@
     "method-override": "^2.2.0",
     "socket.io": "^1.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "open": "0.0.5"
+  },
   "scripts": {},
   "author": "S",
   "license": "ISC"
