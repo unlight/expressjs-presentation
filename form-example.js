@@ -19,7 +19,9 @@ app.get("/", function(req, res) {
 
 app.all("/form-m", function(req, res) {
 	if (req.method == "POST") {
+		console.log("req.body");
 		console.log(req.body);
+		console.log("req.files");
 		console.log(req.files);
 	}
 	res.render("form-m.ejs");

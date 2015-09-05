@@ -7,9 +7,11 @@ var net = require('net');
 app.set("port", 3000);
 
 app.use(cookieParser("xfre"));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
 
-var session    = require("express-session");
+var session = require("express-session");
 app.use(session({
 	secret: "xxx",
 	// resave: true,
@@ -37,11 +39,15 @@ app.get('/abc*', function(req, res) {
 });
 
 app.get("/jsonp", function(req, res, next) {
-	res.jsonp({x: 2});
+	res.jsonp({
+		x: 2
+	});
 });
 
 app.head("/jsonp", function(req, res, next) {
-	res.jsonp({x: 2});
+	res.jsonp({
+		x: 2
+	});
 });
 
 app.get("/json", function(req, res, next) {
@@ -52,17 +58,17 @@ app.get("/json", function(req, res, next) {
 
 
 app.get("/send", function(req, res, next) {
-	res.send([12,3]);
+	res.send([12, 3]);
 });
 
 app.get("/products/:productId(\\d+)", function(req, res, next) {
-    res.send("Requested " + req.params.productId);
+	res.send("Requested " + req.params.productId);
 });
 
 app.get("/", function(req, res, next) {
 
 	// res.cookie("key", "value", {signed: true});
-//	res.cookie('rememberme', 'xxxxx', { expires: new Date(Date.now() + 900000000), httpOnly: true , signed: true});
+	//	res.cookie('rememberme', 'xxxxx', { expires: new Date(Date.now() + 900000000), httpOnly: true , signed: true});
 	res.write("\n" + JSON.stringify(req.headers));
 	res.write("\n" + JSON.stringify(req.cookies));
 	res.write("\n" + JSON.stringify(req.signedCookies));
@@ -88,25 +94,73 @@ app.get("/profile/:name", function(req, res) {
 });
 
 app.get('/domain-caught2', function(req, res, next) {
-	var client = net.connect({port: 8124}, function() {
-		res.end("ok");	
+	var client = net.connect({
+		port: 8124
+	}, function() {
+		res.end("ok");
 	});
-	
+
 });
 
 // domains
 app.get('/domain-caught', function(req, res, next) {
-    // create a domain for this request
-    var domain = require('domain').create();
-    domain.run(function() {
-       var client = net.connect({port: 8124});
-    });
-    // handle errors on this domain
-    domain.on('error', function(err) {
-        console.error('DOMAIN ERROR CAUGHT\n', err.stack);
-        res.end('Server error.');
-        // server.close(); // server - result of app.listen()
-    });
+	// create a domain for this request
+	var domain = require('domain').create();
+	domain.run(function() {
+		var client = net.connect({
+			port: 8124
+		});
+	});
+	// handle errors on this domain
+	domain.on('error', function(err) {
+		console.error('DOMAIN ERROR CAUGHT\n', err.stack);
+		res.end('Server error.');
+		// server.close(); // server - result of app.listen()
+	});
+});
+
+
+// Test par.
+function p1(req, res, next) {
+	setTimeout(function() {
+		console.log("p1");
+		next();
+	}, 0);
+}
+
+function p2a(req, res, next) {
+	setTimeout(function() {
+		console.log("p2a");
+		next();
+	}, 2000);
+}
+
+function p2b(req, res, next) {
+	setTimeout(function() {
+		console.log("p2b");
+		next();
+	}, 2000);
+}
+
+function p2(req, res, next) {
+	var async = require('async');
+	async.parallel({
+			one: function(done) {
+				p2a(req, res, done);
+			},
+			two: function(done) {
+				p2b(req, res, done);
+			},
+		},
+		function(err, results) {
+			// results now equals: {one: 1, two: 2}
+			next(err);
+		});
+}
+
+app.get('/par', p1, p2, function(req, res, next) {
+	console.log("ok");
+	res.send("ok");
 });
 
 
