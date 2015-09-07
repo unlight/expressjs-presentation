@@ -56,7 +56,7 @@ var server = app.listen(app.get("port"), function() {
 	require("open")("http://localhost:3000/epic-fail");
 });
 
-// process.on("uncaughtException", function(err) {
-// 	console.log(err);
-// 	process.exit(1);
-// });
+process.on("uncaughtException", function(err) {
+	console.log("Exception logged: ", err);
+	//process.exit(1);
+});

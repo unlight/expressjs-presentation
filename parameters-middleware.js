@@ -27,5 +27,5 @@ app.get("/user/:user/:ref?", function(req, res) {
 
 app.listen(app.get("port"), function() {
 	console.log("Express app started, http://localhost:%d", app.get("port"));
-	require("open")("http://localhost:3000/user/ivan");
+	require("open")("http://localhost:3000/user/1");
 });

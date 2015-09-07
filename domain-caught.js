@@ -13,13 +13,12 @@ app.get('/domain-caught', function(req, res, next) {
     domain.run(function() {
         setTimeout(function() {
             throw new Error("Boom!");
-        }, 0);
+        });
     });
     // handle errors on this domain
     domain.on('error', function(err) {
         console.error('DOMAIN ERROR CAUGHT\n', err.stack);
         res.end('Server error.');
-        server.close(); // server - result of app.listen()
     });
 });
 
@@ -53,10 +52,5 @@ app.use(function(err, req, res, next) {
 
 var server = app.listen(app.get("port"), function() {
 	console.log("Express app started, http://localhost:%d", app.get("port"));
-	require("open")("http://localhost:3000/epic-fail");
+	require("open")("http://localhost:3000/domain-caught");
 });
-
-// process.on("uncaughtException", function(err) {
-// 	console.log(err);
-// 	process.exit(1);
-// });

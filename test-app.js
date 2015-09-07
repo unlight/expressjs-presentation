@@ -163,6 +163,28 @@ app.get('/par', p1, p2, function(req, res, next) {
 	res.send("ok");
 });
 
+var r = express.Router();
+r.use("/", function(req, res, next) {
+	console.log("use r");
+	next();
+});
+r.get("/1", function(req, res, next) {
+	console.log("use r 1");
+	next();
+});
+
+app.use("/use", r);
+
+// app.use("/use", function(req, res, next) {
+// 	console.log("use");
+// 	next();
+// });
+
+// app.get("/use/1", function(req, res, next) {
+// 	console.log("use 1");
+// 	next();
+// });
+
 
 app.listen(app.get("port"), function() {
 	console.log("Express app started, port %d", app.get("port"));
