@@ -51,7 +51,7 @@ app.head("/jsonp", function(req, res, next) {
 });
 
 app.get("/json", function(req, res, next) {
-	var x = JSON.stringify(undefined);
+	var x = JSON.stringify(null);
 	console.log(x);
 	res.json(null);
 });
