@@ -61,9 +61,9 @@ app.get("/send", function(req, res, next) {
 	res.send([12, 3]);
 });
 
-app.get("/products/:productId(\\d+)", function(req, res, next) {
-	res.send("Requested " + req.params.productId);
-});
+// app.get("/products/:productId(\\d+)", function(req, res, next) {
+// 	res.send("Requested " + req.params.productId);
+// });
 
 app.get("/", function(req, res, next) {
 
@@ -119,6 +119,10 @@ app.get('/domain-caught', function(req, res, next) {
 	});
 });
 
+
+app.get(/\/products\/([^\/]+)\/?$/, function(req, res, next) {
+   res.send("Requested " + req.params[0]);
+});
 
 // Test par.
 function p1(req, res, next) {
@@ -184,6 +188,7 @@ app.use("/use", r);
 // 	console.log("use 1");
 // 	next();
 // });
+
 
 
 app.listen(app.get("port"), function() {
