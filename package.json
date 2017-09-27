@@ -16,12 +16,17 @@
     "jade": "^1.7.0",
     "jquery": "^2.1.1",
     "method-override": "^2.2.0",
-    "socket.io": "^1.1.0"
+    "socket.io": "^2.0.2",
+    "snyk": "^1.41.1"
   },
   "devDependencies": {
     "open": "0.0.5"
   },
-  "scripts": {},
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
   "author": "S",
-  "license": "ISC"
+  "license": "ISC",
+  "snyk": true
 }
